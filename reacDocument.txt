@@ -1,0 +1,37 @@
+React JS: 
+    - Khai báo function
+        - Hàm arrow function
+            `<button onClick={()=> {....}}></button>`
+        - useState() example const [value , setValue ] = useState(initState);
+
+//Variable
+
+nên sử dụng const cho tất cả các biến của mình
+
+-   Scale values
+    const answer = 43;
+    const greeting = 'Hello';
+
+- Arrays and Objects
+    const numbers = [2,3,4,5];
+    const person = {
+        name : 'Trieu',
+        age : 21
+    }
+
+//Khai báo Hàm
+Hàm arrow function : 
+    - const X = () => {
+        //Block Code herehere
+    }
+
+
+//Async Await
+    const fetchData = async () => {
+    const resp = await fetch('https://api.github.com');
+    
+    const data = await resp.json();
+    console.log(data);
+    };
+
+    fetchData();
