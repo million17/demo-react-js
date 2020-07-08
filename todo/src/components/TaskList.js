@@ -12,6 +12,7 @@ export default class TaskList extends Component {
                 task={task}
                 onUpdateStatus= {this.props.onUpdateStatus}
                 onDeleteTask = {this.props.onDeleteTask}
+                onUpdate = {this.props.onUpdate}
             />
         })
 

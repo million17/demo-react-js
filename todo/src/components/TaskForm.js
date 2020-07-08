@@ -4,9 +4,42 @@ export default class TaskForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             txtTaskName: '',
             sltStatus: false,
         }
+    }
+
+    //Khi refresh lại sẽ gọi thằng này, và gọi duy nhất 1 lần sau khi load
+    componentWillMount() {
+        console.log('componentWillMount');
+        if (this.props.task) {
+            this.setState({
+                id: this.props.task.id,
+                txtTaskName: this.props.task.txtTaskName,
+                sltStatus: this.props.task.sltStatus,
+            });
+        }
+    }
+
+    //Sau khi refresh click lại sẽ gọi thằng này !!!
+    componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps');
+        if (nextProps && nextProps.task) {
+            this.setState({
+                id: nextProps.task.id,
+                txtTaskName: nextProps.task.txtTaskName,
+                sltStatus: nextProps.task.sltStatus,
+            });
+        } else if (!nextProps.task) {
+            //Check Edit -> Add 
+            this.setState({
+                id: '',
+                txtTaskName: '',
+                sltStatus: false,
+            })
+        }
+
     }
 
     _onCloseForm = () => {
@@ -18,7 +51,7 @@ export default class TaskForm extends Component {
         var target = event.target;
         var name = target.name;
         var value = target.value;
-        if(name === 'sltStatus') {
+        if (name === 'sltStatus') {
             value = target.value === 'true' ? true : false
         }
         this.setState({
@@ -34,19 +67,21 @@ export default class TaskForm extends Component {
         //Cancel & Close
         this._onCloseForm();
         this._onClear();
-        
+
     }
 
     _onClear = () => {
         this.setState({
-            txtTaskName : '',
-            sltStatus : false,
+            txtTaskName: '',
+            sltStatus: false,
         });
     }
 
     render() {
+        var { id } = this.state;
         return (
             <div className="col-4">
+                <div>{id !== '' ? 'Update' : 'Add new task'}</div>
                 <span
                     onClick={this._onCloseForm}
                 >
@@ -81,10 +116,10 @@ export default class TaskForm extends Component {
                         className="btn btn-primary mr-2">
                         Submit
                         </button>
-                    <button 
-                    type="reset"
-                     className="btn btn-primary"
-                     onClick={this._onClear}>Cancel</button>
+                    <button
+                        type="reset"
+                        className="btn btn-primary"
+                        onClick={this._onClear}>Cancel</button>
                 </form>
             </div>
         )

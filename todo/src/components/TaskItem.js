@@ -15,6 +15,12 @@ export default class TaskItem extends Component {
         this.props.onDeleteTask(this.props.task.id);
     }
 
+    _onUpdate = () => {
+        console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
+
+        this.props.onUpdate(this.props.task.id);
+    }
+
     render() {
         var { task, index } = this.props;
         return (
@@ -40,7 +46,8 @@ export default class TaskItem extends Component {
                         <td>
                             <button
                                 type="button"
-                                className="btn btn-warning mr-2">Edit</button>
+                                className="btn btn-warning mr-2"
+                                onClick={this._onUpdate}>Edit</button>
                             <button
                                 type="button"
                                 className="btn btn-info"

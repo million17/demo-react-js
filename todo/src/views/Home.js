@@ -11,6 +11,7 @@ export default class Home extends Component {
 
             ],
             isDisplayForm: false,
+            taskEditing: null
         }
     }
 
@@ -24,33 +25,6 @@ export default class Home extends Component {
         }
     }
 
-    // _onGenerateData = () => {
-    //     var tasks = [
-    //         {
-    //             id: this.generateId(),
-    //             txtTaskName: 'Learn Angular',
-    //             sltStatus: false,
-
-    //         },
-    //         {
-    //             id: this.generateId(),
-    //             txtTaskName: 'Learn React Js',
-    //             sltStatus: true,
-    //         },
-    //         {
-    //             id: this.generateId(),
-    //             txtTaskName: 'Learn Java',
-    //             sltStatus: true,
-    //         },
-    //     ];
-    //     console.log(tasks);
-    //     this.setState({
-    //         tasks: tasks
-    //     })
-    //     localStorage.setItem('tasks', JSON.stringify(tasks));
-    //     //Nên chuyển thành String thay vì object
-    // };
-
     s4() {
         //Viết 1 hàm random key
         return Math.floor((1 * Math.random()) * 0x10000).toString(16).substring(1);
@@ -61,11 +35,21 @@ export default class Home extends Component {
         return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4();
     }
 
-    _onTouggleForm = () => {
-        this.setState({
-            //Click thì là true và ngược lại
-            isDisplayForm: !this.state.isDisplayForm
-        })
+    _onTouggleForm = () => { // Add task
+        if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+            this.setState({
+                //Click thì là true và ngược lại
+                isDisplayForm: true,
+                taskEditing: null
+            })
+        } else {
+            this.setState({
+                //Click thì là true và ngược lại
+                isDisplayForm: !this.state.isDisplayForm,
+                taskEditing: null
+            })
+        }
+
     }
 
     _onCloseForm = () => {
@@ -74,13 +58,27 @@ export default class Home extends Component {
         })
     }
 
+    _onShowForm = () => {
+        this.setState({
+            isDisplayForm: true,
+        })
+    }
+
     _onSubmit = (data) => {
         var { tasks } = this.state;
-        data.id = this.generateId();// task
-        tasks.push(data);
+        if (data.id === '') {
+            data.id = this.generateId();// task
+            tasks.push(data);
+        } else {
+            //Edit
+            var index = this.findIndex(data.id);
+            tasks[index] = data;
+        }
+
 
         this.setState({
-            tasks: tasks
+            tasks: tasks,
+            taskEditing: null
         });
 
         localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -117,6 +115,20 @@ export default class Home extends Component {
         this._onCloseForm();
     }
 
+    _onUpdate = (id) => {
+        var { tasks } = this.state;
+        console.log(`Update `, id)
+        var index = this.findIndex(id);
+        var taskEditing = tasks[index];
+        console.log(`Task Editing `, taskEditing);
+        this.setState({
+            taskEditing: taskEditing,
+
+        });
+        this._onShowForm();
+
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state;
         var result = -1;
@@ -132,12 +144,13 @@ export default class Home extends Component {
     }
 
     render() {
-        var { tasks, isDisplayForm } = this.state;//== var tasks = this.state.tasks
+        var { tasks, isDisplayForm, taskEditing } = this.state;//== var tasks = this.state.tasks
 
         var elmTaskForm = isDisplayForm
             ? <TaskForm
                 onCloseForm={this._onCloseForm}
-                onSubmit={this._onSubmit} />
+                onSubmit={this._onSubmit}
+                task={taskEditing} />
             : '';// Check nếu là true thì hiện TaskForm còn không thì rỗng
         return (
             <div className="row my-5">
@@ -166,6 +179,7 @@ export default class Home extends Component {
                     <TaskList
                         tasks={tasks}
                         onUpdateStatus={this._onUpdateStatus}
+                        onUpdate={this._onUpdate}
                         onDeleteTask={this._onDeleteTask} />
                 </div>
             </div>
