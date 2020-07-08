@@ -11,7 +11,11 @@ export default class Home extends Component {
 
             ],
             isDisplayForm: false,
-            taskEditing: null
+            taskEditing: null,
+            filter: {
+                name: '',
+                status: -1
+            }
         }
     }
 
@@ -129,6 +133,17 @@ export default class Home extends Component {
 
     }
 
+    _onFilter = (filterName, filterStatus) => {
+        console.log(`filter`, filterName + ' - ' + filterStatus);
+        filterStatus = parseInt(filterStatus);
+        this.setState({
+            filter: {
+                txtTaskName: filterName.toLowerCase(),
+                sltStatus: filterStatus
+            }
+        });
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state;
         var result = -1;
@@ -144,8 +159,21 @@ export default class Home extends Component {
     }
 
     render() {
-        var { tasks, isDisplayForm, taskEditing } = this.state;//== var tasks = this.state.tasks
-
+        var { tasks, isDisplayForm, taskEditing, filter } = this.state;//== var tasks = this.state.tasks
+        if (filter) {
+            if (filter.txtTaskName) {
+                tasks = tasks.filter((task) => {
+                    return task.txtTaskName.toLowerCase().indexOf(filter.txtTaskName) !== -1;
+                });
+            }
+            tasks = tasks.filter((task) => {
+                if (filter.sltStatus === -1) {
+                    return task;
+                } else {
+                    return task.sltStatus === (filter.sltStatus === 1 ? true : false);
+                }
+            })
+        }
         var elmTaskForm = isDisplayForm
             ? <TaskForm
                 onCloseForm={this._onCloseForm}
@@ -180,7 +208,8 @@ export default class Home extends Component {
                         tasks={tasks}
                         onUpdateStatus={this._onUpdateStatus}
                         onUpdate={this._onUpdate}
-                        onDeleteTask={this._onDeleteTask} />
+                        onDeleteTask={this._onDeleteTask}
+                        onFilter={this._onFilter} />
                 </div>
             </div>
         )

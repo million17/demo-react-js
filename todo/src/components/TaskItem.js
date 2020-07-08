@@ -25,7 +25,7 @@ export default class TaskItem extends Component {
         var { task, index } = this.props;
         return (
             <>
-                <tbody>
+
                     <tr>
                         <th scope="row">{index}</th>
                         <td>{task.txtTaskName}</td>
@@ -54,7 +54,7 @@ export default class TaskItem extends Component {
                                 onClick={this._onDeleteTask}>Delete</button>
                         </td>
                     </tr>
-                </tbody>
+
             </>
         )
     }
