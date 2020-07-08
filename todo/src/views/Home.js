@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Search from './../components/Search'
 import TaskList from './../components/TaskList';
 import TaskForm from '../components/TaskForm';
+import Controll from '../components/Controll';
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,8 @@ export default class Home extends Component {
             filter: {
                 name: '',
                 status: -1
-            }
+            },
+            keyWord: ''
         }
     }
 
@@ -144,6 +145,13 @@ export default class Home extends Component {
         });
     }
 
+    _onSearch = (keyWord) => {
+        console.log(keyWord);
+        this.setState({
+            keyWord: keyWord
+        })
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state;
         var result = -1;
@@ -159,7 +167,7 @@ export default class Home extends Component {
     }
 
     render() {
-        var { tasks, isDisplayForm, taskEditing, filter } = this.state;//== var tasks = this.state.tasks
+        var { tasks, isDisplayForm, taskEditing, filter, keyWord } = this.state;//== var tasks = this.state.tasks
         if (filter) {
             if (filter.txtTaskName) {
                 tasks = tasks.filter((task) => {
@@ -172,6 +180,13 @@ export default class Home extends Component {
                 } else {
                     return task.sltStatus === (filter.sltStatus === 1 ? true : false);
                 }
+            })
+        }
+        if (keyWord) {
+            tasks = tasks.filter((task) => {
+                
+                return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
+                
             })
         }
         var elmTaskForm = isDisplayForm
@@ -201,8 +216,8 @@ export default class Home extends Component {
                                 this._onGenerateData
                             }>Generate Data</button> */}
                     </div>
-                    {/* Search */}
-                    <Search />
+                    {/* Search And Sort */}
+                    <Controll onSearch={this._onSearch} />
                     {/* end Search */}
                     <TaskList
                         tasks={tasks}
