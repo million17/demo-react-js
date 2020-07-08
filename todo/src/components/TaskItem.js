@@ -8,17 +8,17 @@ export default class TaskItem extends Component {
                 <tbody>
                     <tr>
                         <th scope="row">{index}</th>
-                        <td>{task.name}</td>
+                        <td>{task.txtTaskName}</td>
                         <td>
                             <button
                                 style={{ fontSize: 10 }}
                                 type="button"
                                 className={
-                                    task.status === true
+                                    task.sltStatus === true
                                         ? 'btn btn-success'
                                         : 'btn btn-danger'}>
                                 {
-                                    task.status === true
+                                    task.sltStatus === true
                                         ? 'Active'
                                         : 'Enable'}
                             </button></td>
