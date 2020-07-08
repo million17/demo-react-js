@@ -102,6 +102,21 @@ export default class Home extends Component {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
+    _onDeleteTask = (id) => {
+        var { tasks } = this.state;
+        console.log(`Log id từ thằng cha gọi xuống thằng con `, id)
+        var index = this.findIndex(id);
+        console.log(`Index`, index);
+        if (index !== -1) {
+            tasks.splice(index, 1);//Xóa đi phần tử khi tìm thấy bằng splice
+            this.setState({
+                tasks: tasks
+            });
+        }
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        this._onCloseForm();
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state;
         var result = -1;
@@ -148,7 +163,10 @@ export default class Home extends Component {
                     {/* Search */}
                     <Search />
                     {/* end Search */}
-                    <TaskList tasks={tasks} onUpdateStatus={this._onUpdateStatus} />
+                    <TaskList
+                        tasks={tasks}
+                        onUpdateStatus={this._onUpdateStatus}
+                        onDeleteTask={this._onDeleteTask} />
                 </div>
             </div>
         )

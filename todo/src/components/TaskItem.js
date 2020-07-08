@@ -3,10 +3,16 @@ import React, { Component } from 'react'
 export default class TaskItem extends Component {
 
     _onUpdateStatus = () => {
-        console.log(`Thằng con đẩy lên id cho thằng cha nó ` ,this.props.task.id);
+        console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
 
         this.props.onUpdateStatus(this.props.task.id);
 
+    }
+
+    _onDeleteTask = () => {
+        console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
+
+        this.props.onDeleteTask(this.props.task.id);
     }
 
     render() {
@@ -32,8 +38,13 @@ export default class TaskItem extends Component {
                                         : 'Enable'}
                             </span></td>
                         <td>
-                            <button type="button" className="btn btn-warning mr-2">Edit</button>
-                            <button type="button" className="btn btn-info">Delete</button>
+                            <button
+                                type="button"
+                                className="btn btn-warning mr-2">Edit</button>
+                            <button
+                                type="button"
+                                className="btn btn-info"
+                                onClick={this._onDeleteTask}>Delete</button>
                         </td>
                     </tr>
                 </tbody>
