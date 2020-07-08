@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 
 export default class TaskItem extends Component {
+
+    _onUpdateStatus = () => {
+        console.log(`Thằng con đẩy lên id cho thằng cha nó ` ,this.props.task.id);
+
+        this.props.onUpdateStatus(this.props.task.id);
+
+    }
+
     render() {
         var { task, index } = this.props;
         return (
@@ -10,9 +18,10 @@ export default class TaskItem extends Component {
                         <th scope="row">{index}</th>
                         <td>{task.txtTaskName}</td>
                         <td>
-                            <button
+                            <span
                                 style={{ fontSize: 10 }}
                                 type="button"
+                                onClick={this._onUpdateStatus}
                                 className={
                                     task.sltStatus === true
                                         ? 'btn btn-success'
@@ -21,7 +30,7 @@ export default class TaskItem extends Component {
                                     task.sltStatus === true
                                         ? 'Active'
                                         : 'Enable'}
-                            </button></td>
+                            </span></td>
                         <td>
                             <button type="button" className="btn btn-warning mr-2">Edit</button>
                             <button type="button" className="btn btn-info">Delete</button>

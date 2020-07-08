@@ -88,6 +88,34 @@ export default class Home extends Component {
 
     }
 
+    _onUpdateStatus = (id) => {
+        var { tasks } = this.state;
+        console.log(`Log id từ thằng cha gọi xuống thằng con `, id)
+        var index = this.findIndex(id);
+        console.log(`Index`, index);
+        if (index !== -1) {
+            tasks[index].sltStatus = !tasks[index].sltStatus;
+            this.setState({
+                tasks: tasks
+            });
+        }
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    findIndex = (id) => {
+        var { tasks } = this.state;
+        var result = -1;
+        tasks.forEach((task, index) => {
+
+            if (task.id === id) {
+                // console.log(index);  
+                result = index;
+            }
+        });
+        return result;
+
+    }
+
     render() {
         var { tasks, isDisplayForm } = this.state;//== var tasks = this.state.tasks
 
@@ -120,7 +148,7 @@ export default class Home extends Component {
                     {/* Search */}
                     <Search />
                     {/* end Search */}
-                    <TaskList tasks={tasks} />
+                    <TaskList tasks={tasks} onUpdateStatus={this._onUpdateStatus} />
                 </div>
             </div>
         )

@@ -10,6 +10,7 @@ export default class TaskList extends Component {
                 key={task.id}
                 index={index + 1}
                 task={task}
+                onUpdateStatus= {this.props.onUpdateStatus}
             />
         })
 
@@ -21,6 +22,7 @@ export default class TaskList extends Component {
                             <th scope="col">#</th>
                             <th scope="col">Task Name</th>
                             <th scope="col">STT</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     {elements}
