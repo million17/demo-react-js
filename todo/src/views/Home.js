@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import TaskList from './../components/TaskList';
 import TaskForm from '../components/TaskForm';
 import Controll from '../components/Controll';
+import _ from 'lodash';
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -96,7 +97,10 @@ export default class Home extends Component {
     _onUpdateStatus = (id) => {
         var { tasks } = this.state;
         console.log(`Log id từ thằng cha gọi xuống thằng con `, id)
-        var index = this.findIndex(id);
+        // var index = this.findIndex(id);
+        var index = _.findIndex(tasks, (task) => {
+            return task.id === id
+        })
         console.log(`Index`, index);
         if (index !== -1) {
             tasks[index].sltStatus = !tasks[index].sltStatus;
@@ -201,10 +205,13 @@ export default class Home extends Component {
             })
         }
         if (keyWord) {
-            tasks = tasks.filter((task) => {
+            // tasks = tasks.filter((task) => {
 
+            //     return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
+
+            // })
+            tasks = _.filter(tasks, (task) => {
                 return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
-
             })
         }
         if (sortBy === 'name') {
