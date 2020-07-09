@@ -16,7 +16,9 @@ export default class Home extends Component {
                 name: '',
                 status: -1
             },
-            keyWord: ''
+            keyWord: '',
+            sortBy: 'name',
+            sortValue: 1
         }
     }
 
@@ -152,6 +154,15 @@ export default class Home extends Component {
         })
     }
 
+    _onSort = (sortBy, sortValue) => {
+
+        this.setState({
+            sortBy: sortBy,
+            sortValue: sortValue
+        })
+        console.log(`Sort : `, this.state);
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state;
         var result = -1;
@@ -167,7 +178,14 @@ export default class Home extends Component {
     }
 
     render() {
-        var { tasks, isDisplayForm, taskEditing, filter, keyWord } = this.state;//== var tasks = this.state.tasks
+        var {
+            tasks,
+            isDisplayForm,
+            taskEditing,
+            filter,
+            keyWord,
+            sortBy,
+            sortValue } = this.state;//== var tasks = this.state.tasks
         if (filter) {
             if (filter.txtTaskName) {
                 tasks = tasks.filter((task) => {
@@ -184,11 +202,25 @@ export default class Home extends Component {
         }
         if (keyWord) {
             tasks = tasks.filter((task) => {
-                
+
                 return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
-                
+
             })
         }
+        if (sortBy === 'name') {
+            tasks.sort((a, b) => {
+                if (a.txtTaskName > b.txtTaskName) return sortValue;
+                else if (a.txtTaskName < b.txtTaskName) return -sortValue;
+                else return 0;
+            })
+        } else {
+            tasks.sort((a, b) => {
+                if (a.sltStatus > b.sltStatus) return -sortValue;
+                else if (a.sltStatus < b.sltStatus) return sortValue;
+                else return 0;
+            })
+        }
+
         var elmTaskForm = isDisplayForm
             ? <TaskForm
                 onCloseForm={this._onCloseForm}
@@ -217,7 +249,11 @@ export default class Home extends Component {
                             }>Generate Data</button> */}
                     </div>
                     {/* Search And Sort */}
-                    <Controll onSearch={this._onSearch} />
+                    <Controll
+                        onSort={this._onSort}
+                        onSearch={this._onSearch}
+                        sortBy={sortBy}
+                        sortValue={sortValue} />
                     {/* end Search */}
                     <TaskList
                         tasks={tasks}

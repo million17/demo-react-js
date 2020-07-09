@@ -8,7 +8,10 @@ export default class Controll extends Component {
         return (
             <div>
                 <Search onSearch={this.props.onSearch} />
-                <Sort />
+                <Sort 
+                sortBy={this.props.sortBy}
+                sortValue={this.props.sortValue}
+                onSort={this.props.onSort} />
             </div>
         )
     }
