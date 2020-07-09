@@ -3,6 +3,7 @@ import TaskList from './../components/TaskList';
 import TaskForm from '../components/TaskForm';
 import Controll from '../components/Controll';
 import _ from 'lodash';
+import demo from '../training/demo'
 export default class Home extends Component {
     constructor(props) {
         super(props);
