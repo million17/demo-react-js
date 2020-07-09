@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-
-export default class TaskForm extends Component {
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../src/actions/index';
+class TaskForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,7 +63,8 @@ export default class TaskForm extends Component {
     _onSubmit = (e) => {
         //Chặn load trang khi submit
         e.preventDefault();
-        this.props.onSubmit(this.state);
+
+        this.props.onAddTask(this.state);
 
         //Cancel & Close
         this._onCloseForm();
@@ -125,3 +127,20 @@ export default class TaskForm extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onAddTask: (task) => {
+            dispatch(actions.addTask(task))
+        }
+    }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskForm);

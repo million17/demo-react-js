@@ -7,10 +7,6 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tasks: [
-                //id unique, name, status
-
-            ],
             isDisplayForm: false,
             taskEditing: null,
             filter: {
@@ -23,25 +19,7 @@ export default class Home extends Component {
         }
     }
 
-    componentWillMount() {
-        //Khi refresh lại sẽ gọi thằng này, và gọi duy nhất 1 lần sau khi load
-        if (localStorage && localStorage.getItem('tasks')) {
-            var tasks = JSON.parse(localStorage.getItem('tasks'));
-            this.setState({
-                tasks: tasks,
-            })
-        }
-    }
 
-    s4() {
-        //Viết 1 hàm random key
-        return Math.floor((1 * Math.random()) * 0x10000).toString(16).substring(1);
-    }
-
-    generateId() {
-        //Generate Key để k bị trùng lặp với bất kì phần tử nào
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4();
-    }
 
     _onTouggleForm = () => { // Add task
         if (this.state.isDisplayForm && this.state.taskEditing !== null) {
@@ -182,51 +160,50 @@ export default class Home extends Component {
     }
 
     render() {
-        var {
-            tasks,
+        var {   
             isDisplayForm,
             taskEditing,
             filter,
             keyWord,
             sortBy,
             sortValue } = this.state;//== var tasks = this.state.tasks
-        if (filter) {
-            if (filter.txtTaskName) {
-                tasks = tasks.filter((task) => {
-                    return task.txtTaskName.toLowerCase().indexOf(filter.txtTaskName) !== -1;
-                });
-            }
-            tasks = tasks.filter((task) => {
-                if (filter.sltStatus === -1) {
-                    return task;
-                } else {
-                    return task.sltStatus === (filter.sltStatus === 1 ? true : false);
-                }
-            })
-        }
-        if (keyWord) {
-            // tasks = tasks.filter((task) => {
+        // if (filter) {
+        //     if (filter.txtTaskName) {
+        //         tasks = tasks.filter((task) => {
+        //             return task.txtTaskName.toLowerCase().indexOf(filter.txtTaskName) !== -1;
+        //         });
+        //     }
+        //     tasks = tasks.filter((task) => {
+        //         if (filter.sltStatus === -1) {
+        //             return task;
+        //         } else {
+        //             return task.sltStatus === (filter.sltStatus === 1 ? true : false);
+        //         }
+        //     })
+        // }
+        // if (keyWord) {
+        //     tasks = tasks.filter((task) => {
 
-            //     return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
+        //         return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
 
-            // })
-            tasks = _.filter(tasks, (task) => {
-                return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
-            })
-        }
-        if (sortBy === 'name') {
-            tasks.sort((a, b) => {
-                if (a.txtTaskName > b.txtTaskName) return sortValue;
-                else if (a.txtTaskName < b.txtTaskName) return -sortValue;
-                else return 0;
-            })
-        } else {
-            tasks.sort((a, b) => {
-                if (a.sltStatus > b.sltStatus) return -sortValue;
-                else if (a.sltStatus < b.sltStatus) return sortValue;
-                else return 0;
-            })
-        }
+        //     })
+        //     tasks = _.filter(tasks, (task) => {
+        //         return task.txtTaskName.toLowerCase().indexOf(keyWord) !== -1;
+        //     })
+        // }
+        // if (sortBy === 'name') {
+        //     tasks.sort((a, b) => {
+        //         if (a.txtTaskName > b.txtTaskName) return sortValue;
+        //         else if (a.txtTaskName < b.txtTaskName) return -sortValue;
+        //         else return 0;
+        //     })
+        // } else {
+        //     tasks.sort((a, b) => {
+        //         if (a.sltStatus > b.sltStatus) return -sortValue;
+        //         else if (a.sltStatus < b.sltStatus) return sortValue;
+        //         else return 0;
+        //     })
+        // }
 
         var elmTaskForm = isDisplayForm
             ? <TaskForm

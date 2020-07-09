@@ -4,3 +4,10 @@ export const listAll = () => {
         type: constants.LIST_ALL
     }
 }
+
+export const addTask = (task) => {
+    return {
+        type: constants.ADD_TASK,
+        task
+    }
+}
