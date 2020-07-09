@@ -263,7 +263,6 @@ export default class Home extends Component {
                         sortValue={sortValue} />
                     {/* end Search */}
                     <TaskList
-                        tasks={tasks}
                         onUpdateStatus={this._onUpdateStatus}
                         onUpdate={this._onUpdate}
                         onDeleteTask={this._onDeleteTask}
