@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import TaskList from './../components/TaskList';
 import TaskForm from '../components/TaskForm';
 import Controll from '../components/Controll';
+import { connect } from 'react-redux';
 import _ from 'lodash';
-export default class Home extends Component {
+import * as actions from '../actions/index';
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isDisplayForm: false,
             taskEditing: null,
             filter: {
                 name: '',
@@ -22,54 +23,26 @@ export default class Home extends Component {
 
 
     _onTouggleForm = () => { // Add task
-        if (this.state.isDisplayForm && this.state.taskEditing !== null) {
-            this.setState({
-                //Click thì là true và ngược lại
-                isDisplayForm: true,
-                taskEditing: null
-            })
-        } else {
-            this.setState({
-                //Click thì là true và ngược lại
-                isDisplayForm: !this.state.isDisplayForm,
-                taskEditing: null
-            })
-        }
-
-    }
-
-    _onCloseForm = () => {
-        this.setState({
-            isDisplayForm: false,
-        })
+        // if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+        //     this.setState({
+        //         //Click thì là true và ngược lại
+        //         isDisplayForm: true,
+        //         taskEditing: null
+        //     })
+        // } else {
+        //     this.setState({
+        //         //Click thì là true và ngược lại
+        //         isDisplayForm: !this.state.isDisplayForm,
+        //         taskEditing: null
+        //     })
+        // }
+        this.props.onToggleForm()
     }
 
     _onShowForm = () => {
         this.setState({
             isDisplayForm: true,
         })
-    }
-
-    _onSubmit = (data) => {
-        var { tasks } = this.state;
-        if (data.id === '') {
-            data.id = this.generateId();// task
-            tasks.push(data);
-        } else {
-            //Edit
-            var index = this.findIndex(data.id);
-            tasks[index] = data;
-        }
-
-
-        this.setState({
-            tasks: tasks,
-            taskEditing: null
-        });
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        console.log(data);
-
     }
 
     _onUpdateStatus = (id) => {
@@ -160,8 +133,8 @@ export default class Home extends Component {
     }
 
     render() {
-        var {   
-            isDisplayForm,
+        var { isDisplayForm } = this.props;
+        var {
             taskEditing,
             filter,
             keyWord,
@@ -207,8 +180,6 @@ export default class Home extends Component {
 
         var elmTaskForm = isDisplayForm
             ? <TaskForm
-                onCloseForm={this._onCloseForm}
-                onSubmit={this._onSubmit}
                 task={taskEditing} />
             : '';// Check nếu là true thì hiện TaskForm còn không thì rỗng
         return (
@@ -249,3 +220,19 @@ export default class Home extends Component {
         )
     }
 }
+
+// Kết nốt từ react sang redux
+const mapStateToProps = state => {
+    return {
+        isDisplayForm : state.isDisplayForm,// gọi sang thằng index của reducers
+    };
+}
+// Thực thi hành động
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onToggleForm : () => {
+            dispatch(actions.toggleForm())
+        }
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

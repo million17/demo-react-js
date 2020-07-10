@@ -45,7 +45,6 @@ class TaskForm extends Component {
 
     _onCloseForm = () => {
         this.props.onCloseForm();
-        //Gọi sang thằng cha của nó là Home.js (props)
     }
 
     _onChange = (event) => {
@@ -138,6 +137,9 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         onAddTask: (task) => {
             dispatch(actions.addTask(task))
+        },
+        onCloseForm: () => {
+            dispatch(actions.closeForm())
         }
     }
 
