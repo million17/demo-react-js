@@ -5,7 +5,7 @@ import * as actions from '../actions/index'
 class TaskItem extends Component {
 
     _onUpdateStatus = () => {
-        
+
         this.props.onUpdateStatus(this.props.task.id);
 
     }
@@ -14,6 +14,7 @@ class TaskItem extends Component {
         console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
 
         this.props.onDeleteTask(this.props.task.id);
+        this.props.onCloseForm();
     }
 
     // _onUpdate = () => {
@@ -63,10 +64,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onUpdateStatus : (id) => {
+        onUpdateStatus: (id) => {
             dispatch(actions.updateStatus(id))
+        },
+        onDeleteTask: (id) => {
+            dispatch(actions.deleteTask(id))
+        },
+        onCloseForm: () => {
+            dispatch(actions.closeForm())
         }
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(TaskItem);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskItem);

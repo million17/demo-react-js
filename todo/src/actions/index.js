@@ -15,25 +15,32 @@ export const addTask = (task) => {
 
 export const toggleForm = () => {
     return {
-        type : constants.TOGGLE_FORM,
+        type: constants.TOGGLE_FORM,
     }
 }
 
 export const openForm = () => {
     return {
-        type : constants.OPEN_FORM,
+        type: constants.OPEN_FORM,
     }
 }
 
 export const closeForm = () => {
     return {
-        type : constants.CLOSE_FORM,
+        type: constants.CLOSE_FORM,
     }
 }
 
 export const updateStatus = (id) => { // B2 : Vào thằng này để gọi actions type của nó 
     return {
-        type : constants.UPDATE_STATUS,
+        type: constants.UPDATE_STATUS,
         id // id : id
+    }
+}
+
+export const deleteTask = (id) => {
+    return {
+        type: constants.DELETE,
+        id
     }
 }

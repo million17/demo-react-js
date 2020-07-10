@@ -26,6 +26,8 @@ var data = JSON.parse(localStorage.getItem('tasks'));
 var initState = data ? data : [];
 
 var myReducer = (state = initState, action) => {
+    var id = '';
+    var index = -1;
     switch (action.type) {
         case constants.LIST_ALL:
             return state;
@@ -41,13 +43,20 @@ var myReducer = (state = initState, action) => {
             return [...state];
 
         case constants.UPDATE_STATUS://b3 : Vào đây để xem gọi trường hợp nào để xử lý 
-            var id = action.id
-            var index = findIndex(state, id);
+            id = action.id;
+            index = findIndex(state, id);
             // state[index].sltStatus = !state[index].sltStatus; 
             state[index] = {
                 ...state[index],
-                sltStatus : !state[index].sltStatus
+                sltStatus: !state[index].sltStatus
             }
+            localStorage.setItem('tasks', JSON.stringify(state));
+            return [...state];
+
+        case constants.DELETE:
+            id = action.id;
+            index = findIndex(state, id);
+            state.splice(index, 1);
             localStorage.setItem('tasks', JSON.stringify(state));
             return [...state];
 

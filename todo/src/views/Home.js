@@ -176,7 +176,6 @@ class Home extends Component {
                     {/* end Search */}
                     <TaskList
                         onUpdate={this._onUpdate}
-                        onDeleteTask={this._onDeleteTask}
                         onFilter={this._onFilter} />
                 </div>
             </div>
