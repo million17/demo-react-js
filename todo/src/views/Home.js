@@ -9,7 +9,6 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            taskEditing: null,
             filter: {
                 name: '',
                 status: -1
@@ -107,9 +106,6 @@ class Home extends Component {
     render() {
         var { isDisplayForm } = this.props;
         var {
-            taskEditing,
-            filter,
-            keyWord,
             sortBy,
             sortValue } = this.state;//== var tasks = this.state.tasks
         // if (filter) {
@@ -150,13 +146,9 @@ class Home extends Component {
         //     })
         // }
 
-        var elmTaskForm = isDisplayForm
-            ? <TaskForm
-                task={taskEditing} />
-            : '';// Check nếu là true thì hiện TaskForm còn không thì rỗng
         return (
             <div className="row my-5">
-                {elmTaskForm}
+                <TaskForm />
                 <div className={isDisplayForm ? 'col-8' : 'col-12'}>
                     <div className="my-3">
                         <button

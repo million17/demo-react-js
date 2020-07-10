@@ -8,11 +8,9 @@ var myReducer = (state = initState, action) => {
         case constants.TOGGLE_FORM:
             return !state;
         case constants.CLOSE_FORM:
-            state = false;
-            return state;
+            return false;
         case constants.OPEN_FORM:
-            state = true;
-            return state 
+            return true 
         default: return state
     }
 

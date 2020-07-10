@@ -4,41 +4,32 @@ import * as actions from '../../src/actions/index';
 class TaskForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            id: '',
-            txtTaskName: '',
-            sltStatus: false,
-        }
+        this.state = {}
     }
 
     //Khi refresh lại sẽ gọi thằng này, và gọi duy nhất 1 lần sau khi load
     componentWillMount() {
-        console.log('componentWillMount');
-        if (this.props.task) {
+        if (this.props.itemEditing && this.props.itemEditing.id !== null) {
             this.setState({
-                id: this.props.task.id,
-                txtTaskName: this.props.task.txtTaskName,
-                sltStatus: this.props.task.sltStatus,
+                id: this.props.itemEditing.id,
+                txtTaskName: this.props.itemEditing.txtTaskName,
+                sltStatus: this.props.itemEditing.sltStatus,
             });
+        } else {
+            this._onClear();
         }
     }
 
     //Sau khi refresh click lại sẽ gọi thằng này !!!
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps');
-        if (nextProps && nextProps.task) {
+        if (nextProps && nextProps.itemEditing) {
             this.setState({
-                id: nextProps.task.id,
-                txtTaskName: nextProps.task.txtTaskName,
-                sltStatus: nextProps.task.sltStatus,
+                id: nextProps.itemEditing.id,
+                txtTaskName: nextProps.itemEditing.txtTaskName,
+                sltStatus: nextProps.itemEditing.sltStatus,
             });
-        } else if (!nextProps.task) {
-            //Check Edit -> Add 
-            this.setState({
-                id: '',
-                txtTaskName: '',
-                sltStatus: false,
-            })
+        } else {
+            this._onClear();
         }
 
     }
@@ -73,16 +64,17 @@ class TaskForm extends Component {
 
     _onClear = () => {
         this.setState({
+            id: '',
             txtTaskName: '',
             sltStatus: false,
         });
     }
 
     render() {
-        var { id } = this.state;
+        if (!this.props.isDisplayForm) return '';
         return (
             <div className="col-4">
-                <div>{id !== '' ? 'Update' : 'Add new task'}</div>
+                <div>{!this.state.id ? 'Update' : 'Add new task'}</div>
                 <span
                     onClick={this._onCloseForm}
                 >
@@ -129,7 +121,8 @@ class TaskForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        isDisplayForm: state.isDisplayForm,
+        itemEditing: state.itemEditing
     }
 }
 
@@ -140,6 +133,9 @@ const mapDispatchToProps = (dispatch, props) => {
         },
         onCloseForm: () => {
             dispatch(actions.closeForm())
+        },
+        onToggleForm: () => {
+            dispatch(actions.toggleForm())
         }
     }
 

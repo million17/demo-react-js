@@ -17,11 +17,11 @@ class TaskItem extends Component {
         this.props.onCloseForm();
     }
 
-    // _onUpdate = () => {
-    //     console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
-
-    //     this.props.onUpdateStatus(id);
-    // }
+    _onUpdate = () => {
+        this.props.onOpenForm();
+        console.log(`Task ` ,this.props.task);
+        this.props.onEditTask(this.props.task);
+    }
 
     render() {
         var { task, index } = this.props;
@@ -65,13 +65,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
     return {
         onUpdateStatus: (id) => {
-            dispatch(actions.updateStatus(id))
+            dispatch(actions.updateStatus(id));
         },
         onDeleteTask: (id) => {
-            dispatch(actions.deleteTask(id))
+            dispatch(actions.deleteTask(id));
         },
         onCloseForm: () => {
-            dispatch(actions.closeForm())
+            dispatch(actions.closeForm());
+        },
+        onOpenForm: () => {
+            dispatch(actions.openForm());
+        },
+        onEditTask: (task) => {
+            dispatch(actions.editTask(task));
         }
     };
 }
