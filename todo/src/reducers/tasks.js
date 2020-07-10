@@ -9,7 +9,17 @@ var generateId = () => {
     //Generate Key để k bị trùng lặp với bất kì phần tử nào
     return s4() + s4() + '-' + s4() + '-' + s4();
 }
+var findIndex = (tasks, id) => {
+    var result = -1;
+    tasks.forEach((task, index) => {
+        if (task.id === id) {
+            // console.log(index);  
+            result = index;
+        }
+    });
+    return result;
 
+}
 
 var data = JSON.parse(localStorage.getItem('tasks'));
 
@@ -28,8 +38,17 @@ var myReducer = (state = initState, action) => {
             state.push(newTask);
             console.log(`Object `, newTask);
             localStorage.setItem('tasks', JSON.stringify(state));
+            return [...state];
 
-
+        case constants.UPDATE_STATUS://b3 : Vào đây để xem gọi trường hợp nào để xử lý 
+            var id = action.id
+            var index = findIndex(state, id);
+            // state[index].sltStatus = !state[index].sltStatus; 
+            state[index] = {
+                ...state[index],
+                sltStatus : !state[index].sltStatus
+            }
+            localStorage.setItem('tasks', JSON.stringify(state));
             return [...state];
 
         default: return state;

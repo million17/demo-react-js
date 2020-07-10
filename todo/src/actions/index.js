@@ -30,3 +30,10 @@ export const closeForm = () => {
         type : constants.CLOSE_FORM,
     }
 }
+
+export const updateStatus = (id) => { // B2 : Vào thằng này để gọi actions type của nó 
+    return {
+        type : constants.UPDATE_STATUS,
+        id // id : id
+    }
+}

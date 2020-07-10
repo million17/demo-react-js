@@ -23,19 +23,6 @@ class Home extends Component {
 
 
     _onTouggleForm = () => { // Add task
-        // if (this.state.isDisplayForm && this.state.taskEditing !== null) {
-        //     this.setState({
-        //         //Click thì là true và ngược lại
-        //         isDisplayForm: true,
-        //         taskEditing: null
-        //     })
-        // } else {
-        //     this.setState({
-        //         //Click thì là true và ngược lại
-        //         isDisplayForm: !this.state.isDisplayForm,
-        //         taskEditing: null
-        //     })
-        // }
         this.props.onToggleForm()
     }
 
@@ -45,22 +32,7 @@ class Home extends Component {
         })
     }
 
-    _onUpdateStatus = (id) => {
-        var { tasks } = this.state;
-        console.log(`Log id từ thằng cha gọi xuống thằng con `, id)
-        // var index = this.findIndex(id);
-        var index = _.findIndex(tasks, (task) => {
-            return task.id === id
-        })
-        console.log(`Index`, index);
-        if (index !== -1) {
-            tasks[index].sltStatus = !tasks[index].sltStatus;
-            this.setState({
-                tasks: tasks
-            });
-        }
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
+
 
     _onDeleteTask = (id) => {
         var { tasks } = this.state;
@@ -185,7 +157,6 @@ class Home extends Component {
         return (
             <div className="row my-5">
                 {elmTaskForm}
-                {/* Check nếu là true thì hiện TaskForm còn không thì rỗng */}
                 <div className={isDisplayForm ? 'col-8' : 'col-12'}>
                     <div className="my-3">
                         <button
@@ -195,13 +166,6 @@ class Home extends Component {
                         >
                             Add to do
                             </button>
-
-                        {/* <button
-                            type="button"
-                            className="btn btn-primary mx-2"
-                            onClick={
-                                this._onGenerateData
-                            }>Generate Data</button> */}
                     </div>
                     {/* Search And Sort */}
                     <Controll
@@ -211,7 +175,6 @@ class Home extends Component {
                         sortValue={sortValue} />
                     {/* end Search */}
                     <TaskList
-                        onUpdateStatus={this._onUpdateStatus}
                         onUpdate={this._onUpdate}
                         onDeleteTask={this._onDeleteTask}
                         onFilter={this._onFilter} />

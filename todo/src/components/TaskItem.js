@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import * as actions from '../actions/index'
 
-export default class TaskItem extends Component {
+class TaskItem extends Component {
 
     _onUpdateStatus = () => {
-        console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
-
+        
         this.props.onUpdateStatus(this.props.task.id);
 
     }
@@ -15,11 +16,11 @@ export default class TaskItem extends Component {
         this.props.onDeleteTask(this.props.task.id);
     }
 
-    _onUpdate = () => {
-        console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
+    // _onUpdate = () => {
+    //     console.log(`Thằng con đẩy lên id cho thằng cha nó `, this.props.task.id);
 
-        this.props.onUpdate(this.props.task.id);
-    }
+    //     this.props.onUpdateStatus(id);
+    // }
 
     render() {
         var { task, index } = this.props;
@@ -55,3 +56,17 @@ export default class TaskItem extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {};
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onUpdateStatus : (id) => {
+            dispatch(actions.updateStatus(id))
+        }
+    };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(TaskItem);
