@@ -1,5 +1,7 @@
 # demo-react-js
 
+
+`json-server --watch db.json` Run json-server
 link app `http://todosakura.freevnn.com/`
 
 `npx create-react-app my-app
