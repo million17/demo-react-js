@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import callApi from '../../utils/apiCall'
 import { Link } from 'react-router-dom';
+import { actAddProductRequest, actDetailProductRequest } from '../../actions';
+import { connect } from 'react-redux';
+
+
 
 class ProductActionPage extends Component {
 
@@ -18,18 +22,14 @@ class ProductActionPage extends Component {
     var { match } = this.props;
     if (match) {
       var id = match.params.id;
-      callApi(`/api/get/product/${id}`, 'GET', null).then(res => {
-        console.log(`Details `, res)
-        var data = res.data;
-        this.setState({
-          id: data.id,
-          name: data.name,
-          price: data.price,
-          status: data.status
-        })
-      })
+      this.props.onEditProduct(id)
     }
   }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   render() {
     var { name, price, status } = this.state;
     return (
@@ -79,6 +79,12 @@ class ProductActionPage extends Component {
     e.preventDefault();
     var { id, name, price, status } = this.state;
     var { history } = this.props;
+    var product = {
+      id: id,
+      name: name,
+      price: price,
+      status: status
+    }
     if (id) {
       callApi(`/api/get/product/${id}`, 'PUT', {
         name: name,
@@ -89,15 +95,27 @@ class ProductActionPage extends Component {
         history.goBack();
       });
     } else {
-      callApi('/api/get/product/', 'POST', {
-        name: name,
-        price: price,
-        status: status
-      }).then(res => {
-        console.log(`created :`, res);
-        history.goBack();
-      })
+      this.props.onAddProduct(product);
+      history.goBack();
     }
   }
 }
-export default ProductActionPage
+
+const mapStateToProps = state => {
+  return {
+    itemEditing : state.itemEditing
+  }
+}
+
+const mapDispatchToProp = (dispatch, props) => {
+  return {
+    onAddProduct: (product) => {
+      dispatch(actAddProductRequest(product))
+    },
+    onEditProduct: (id) => {
+      dispatch(actDetailProductRequest(id))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProp)(ProductActionPage)
