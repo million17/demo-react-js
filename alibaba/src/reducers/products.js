@@ -1,27 +1,12 @@
-var initState = [
-    {
-        id : 1,
-        name : "IP 11",
-        price : 700,
-        status : true
-    },
-    {
-        id : 2,
-        name : "SamSung 11",
-        price : 100,
-        status : true
-    },
-    {
-        id : 3,
-        name : "NOKIA 11",
-        price : 200,
-        status : false
-    },
-];
+import * as constants from './../commons/constants'
+var initState = [];
 
 const products = (state = initState, action) => {
-    switch(action.type) {
-        default : return [...state];
+    switch (action.type) {
+        case constants.FETCH_PRODUCTS:
+            state = action.products;
+            return [...state];
+        default: return [...state];
     }
 }
 
