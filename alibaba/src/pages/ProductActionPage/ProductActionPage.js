@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import callApi from '../../utils/apiCall'
 import { Link } from 'react-router-dom';
-import { actAddProductRequest, actDetailProductRequest } from '../../actions';
+import { actAddProductRequest, actDetailProductRequest, actUpdateProductRequest } from '../../actions';
 import { connect } from 'react-redux';
 
 
@@ -26,9 +25,18 @@ class ProductActionPage extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.itemEditing) {
+      var { itemEditing } = nextProps;
+      this.setState({
+        id: itemEditing.id,
+        name: itemEditing.name,
+        price: itemEditing.price,
+        status: itemEditing.status
+      })
+    }
   }
+
 
   render() {
     var { name, price, status } = this.state;
@@ -86,24 +94,19 @@ class ProductActionPage extends Component {
       status: status
     }
     if (id) {
-      callApi(`/api/get/product/${id}`, 'PUT', {
-        name: name,
-        price: price,
-        status: status
-      }).then(res => {
-        console.log(`update :`, res);
-        history.goBack();
-      });
+      this.props.onUpdateProduct(product);
     } else {
       this.props.onAddProduct(product);
-      history.goBack();
+
     }
+    history.goBack();
+
   }
 }
 
 const mapStateToProps = state => {
   return {
-    itemEditing : state.itemEditing
+    itemEditing: state.itemEditing
   }
 }
 
@@ -114,8 +117,11 @@ const mapDispatchToProp = (dispatch, props) => {
     },
     onEditProduct: (id) => {
       dispatch(actDetailProductRequest(id))
+    },
+    onUpdateProduct: (product) => {
+      dispatch(actUpdateProductRequest(product))
     }
   }
 }
 
-export default connect(null, mapDispatchToProp)(ProductActionPage)
+export default connect(mapStateToProps, mapDispatchToProp)(ProductActionPage)
