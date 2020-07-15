@@ -13,6 +13,23 @@ class ProductActionPage extends Component {
       status: '',
     }
   }
+
+  componentDidMount() {
+    var { match } = this.props;
+    if (match) {
+      var id = match.params.id;
+      callApi(`/api/get/product/${id}`, 'GET', null).then(res => {
+        console.log(`Details `, res)
+        var data = res.data;
+        this.setState({
+          id: data.id,
+          name: data.name,
+          price: data.price,
+          status: data.status
+        })
+      })
+    }
+  }
   render() {
     var { name, price, status } = this.state;
     return (
@@ -40,7 +57,8 @@ class ProductActionPage extends Component {
             className="form-check-input"
             name="status"
             onChange={this.onChange}
-            value={status} />
+            value={status}
+            checked={status} />
           <label className="form-check-label">Status</label>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
@@ -59,16 +77,27 @@ class ProductActionPage extends Component {
 
   onSave = (e) => {
     e.preventDefault();
-    var { name, price, status } = this.state;
+    var { id, name, price, status } = this.state;
     var { history } = this.props;
-    callApi('/api/get/product', 'POST', {
-      name: name,
-      price: price,
-      status: status
-    }).then(res => {
-      console.log(`created :`, res);
-      history.goBack();
-    })
+    if (id) {
+      callApi(`/api/get/product/${id}`, 'PUT', {
+        name: name,
+        price: price,
+        status: status
+      }).then(res => {
+        console.log(`update :`, res);
+        history.goBack();
+      });
+    } else {
+      callApi('/api/get/product/', 'POST', {
+        name: name,
+        price: price,
+        status: status
+      }).then(res => {
+        console.log(`created :`, res);
+        history.goBack();
+      })
+    }
   }
 }
 export default ProductActionPage

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class ProductItem extends Component {
     render() {
@@ -19,10 +20,11 @@ class ProductItem extends Component {
                     </span>
                 </td>
                 <td>
-                    <button
-                        type="button"
+                    <Link
+                        to={`/product/${product.id}/edit`}
                         style={{ fontSize: 12 }}
-                        className="btn btn-warning">Edit</button>
+                        className="btn btn-warning"
+                    >Edit</Link>
                     <button
                         type="button"
                         style={{ fontSize: 12 }}
