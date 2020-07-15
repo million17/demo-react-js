@@ -26,10 +26,16 @@ class ProductItem extends Component {
                     <button
                         type="button"
                         style={{ fontSize: 12 }}
+                        onClick={() => this.onDelete(product.id)}
                         className="btn btn-danger ml-2">Delete</button>
                 </td>
             </tr>
         );
+    }
+    onDelete = (id) => {
+        if (confirm('Are you delete ? ')) { // eslint-disable-line
+            this.props.onDelete(id);
+        }
     }
 }
 export default ProductItem;

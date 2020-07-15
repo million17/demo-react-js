@@ -3,6 +3,8 @@ import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import { connect } from 'react-redux';
 import apiCall from '../../utils/apiCall'
+import { Link } from 'react-router-dom';
+
 class ProductListPage extends Component {
     constructor(props) {
         super(props);
@@ -19,14 +21,39 @@ class ProductListPage extends Component {
         })
     }
 
+    onDelete = (id) => {
+        var { products } = this.state;
+        apiCall(`/api/get/product/${id}`, 'DELETE', null).then(res => {
+            if (res.status === 200) {
+                var index = this.findIndex(products, id);
+                if (index !== -1) {
+                    products.splice(index, 1);
+                    this.setState({
+                        products: products
+                    })
+                }
+            }
+        });
+    }
+
+    findIndex = (products, id) => {
+        var result = -1;
+        products.forEach((product, index) => {
+            if (product.id === id) {
+                result = index;
+            }
+        });
+        return result;
+    }
+
     render() {
         // var { products } = this.props;
         var { products } = this.state;
         return (
             <div className="col-12">
-                <button type="button" className="btn btn-primary my-3">
+                <Link to="/product/add" className="btn btn-primary my-3">
                     Add To Products
-                    </button>
+                    </Link>
                 <ProductList>
                     {this.showProducts(products)}
                 </ProductList>
@@ -42,6 +69,7 @@ class ProductListPage extends Component {
                         key={index}
                         product={product}
                         index={index}
+                        onDelete={this.onDelete}
                     />
                 );
             })
