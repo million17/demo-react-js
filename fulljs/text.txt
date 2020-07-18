@@ -1,1 +1,0 @@
-npm i babel-loader @babel/core @babel/node @babel/preset-env @babel/preset-react
