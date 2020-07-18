@@ -2,16 +2,36 @@ import React, { Component } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { actFetchProductsRequest, actDeleteProductRequest } from '../../actions';
 
 
 class ProductListPage extends Component {
+    componentDidMount() {
+        this.props.fetchAllProduct()
+    }
+
+    onDelete = (id) => {
+        this.props.deleteProduct(id);
+    }
+
+    findIndex = (products, id) => {
+        var result = -1;
+        products.forEach((product, index) => {
+            if (product.id === id) {
+                result = index;
+            }
+        });
+        return result;
+    }
+
     render() {
         var { products } = this.props;
         return (
             <div className="col-12">
-                <button type="button" className="btn btn-primary my-3">
+                <Link to="/product/add" className="btn btn-primary my-3">
                     Add To Products
-                    </button>
+                    </Link>
                 <ProductList>
                     {this.showProducts(products)}
                 </ProductList>
@@ -27,6 +47,7 @@ class ProductListPage extends Component {
                         key={index}
                         product={product}
                         index={index}
+                        onDelete={this.onDelete}
                     />
                 );
             })
@@ -43,4 +64,15 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, null)(ProductListPage);
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchAllProduct: () => {
+            dispatch(actFetchProductsRequest())
+        },
+        deleteProduct: (id) => {
+            dispatch(actDeleteProductRequest(id))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage);
