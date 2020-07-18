@@ -21,7 +21,7 @@ let listItem = [
 ]
 let numbers = arrNumber.filter(
     (number) =>
-        number % 2 == 0
+        number > 2
 );
 
 let lists = listItem.map(
