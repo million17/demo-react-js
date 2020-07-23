@@ -4,7 +4,9 @@ import callApi from '../utils/apiCall';
 export const actFetchProductsRequest = () => {
     return (dispatch) => {
         return callApi('/api/get/product', 'GET', null).then(res => {
+            console.log(`res`,res);
             dispatch(actFetchProducts(res.data))
+            console.log(dispatch(actFetchProducts(res.data)));
         })
     }
 }
@@ -12,7 +14,9 @@ export const actFetchProductsRequest = () => {
 export const actFetchProducts = (products) => {
     return {
         type: constants.FETCH_PRODUCTS,
-        products
+        payload : {
+            products,
+        }
     }
 }
 
