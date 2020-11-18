@@ -1,55 +1,37 @@
 import React from "react";
-import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import About from './container/About/index';
+import Users from './container/Users/index';
+import {Layout, Breadcrumb} from "antd";
+import { IdcardOutlined } from '@ant-design/icons';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import MenuLayout from './components/menu';
+
+const {Header, Content, Footer} = Layout;
 
 export default function App() {
-  return (
-    <Router>
-      <Navbar bg="light" variant="light">
-        <Navbar.Brand href="#home">Fox night</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link >
-            <Link to="/">Home</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/about">About</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/users">Login</Link>
-          </Nav.Link>
-        </Nav>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-primary">Search</Button>
-        </Form>
-      </Navbar>
-      <div>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <Layout className="layout">
+                <Header>
+                    <div className="logo"/>
+                    <MenuLayout />
+                </Header>
+                <Content style={{padding: '0 50px'}}>
+                    <Breadcrumb style={{margin: '16px 0'}}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                        <IdcardOutlined />
+                    </Breadcrumb>
+                    <div className="site-layout-content">
+                        <Route exact path="/" component={About}/>
+                        <Route path="/category" component={Users}/>
+                    </div>
+                </Content>
+                <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+            </Layout>
+        </Router>
+    );
 }
 
-function Home() {
-  return <h2>Home</h2>;
-}
 
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}
