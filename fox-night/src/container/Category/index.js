@@ -1,4 +1,4 @@
 export default () => {
-    return <>Home</>
+    return <>Category</>
 }
 

@@ -1,16 +1,17 @@
 import React from "react";
-import About from './container/About/index';
-import Users from './container/Users/index';
 import {Layout, Breadcrumb} from "antd";
 import { IdcardOutlined } from '@ant-design/icons';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import MenuLayout from './components/menu';
-
+import RouteLayout from './components/route';
 const {Header, Content, Footer} = Layout;
+
+
+
 
 export default function App() {
     return (
-        <Router>
+        <Router >
             <Layout className="layout">
                 <Header>
                     <div className="logo"/>
@@ -24,8 +25,7 @@ export default function App() {
                         <IdcardOutlined />
                     </Breadcrumb>
                     <div className="site-layout-content">
-                        <Route exact path="/" component={About}/>
-                        <Route path="/category" component={Users}/>
+                        <RouteLayout />
                     </div>
                 </Content>
                 <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
